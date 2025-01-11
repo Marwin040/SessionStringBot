@@ -6,6 +6,21 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.pool import StaticPool
 from ssnbot import DB_URL
+from sqlalchemy import create_engine
+
+# Connection URL
+connection_url = "postgresql://neondb_owner:ji43CdTZBIPX@ep-broad-lake-a88oaxik.eastus2.azure.neon.tech/neondb?sslmode=require"
+
+# Create an engine
+engine = create_engine(connection_url)
+
+# Connect to the database and perform a query
+with engine.connect() as connection:
+    result = connection.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='public';")
+    
+    print("Tables in the database:")
+    for row in result:
+        print(row[0])
 
 
 BASE = declarative_base()
